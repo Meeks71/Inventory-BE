@@ -6,62 +6,74 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Table;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 @Entity
 @Table
 public class Cars {
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
-private int Id;
- @Column(name="make")
- private String make;
- @Column(name="model")
- private String model;
- @Column(name="year")
- private int year;
- 
- public Cars() {
-	 
- }
- 
- public Cars(int Id, String make, String model, int year) {
-	 this.Id = Id;
-	 this.make = make;
-	 this.model = model;
-	 this.year = year;
-	  }
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int Id;
+	@Column(name = "make")
+	private String make;
+	@Column(name = "model")
+	private String model;
+	@Column(name = "year")
+	private int year;
+	@ManyToOne
+	@JoinColumn(name = "Warehouse_Id")
+	private Warehouse warehouse;
 
-public int getId() {
-	return Id;
-}
+	public Cars() {
 
-public void setId(int id) {
-	Id = id;
-}
+	}
 
-public String getMake() {
-	return make;
-}
+	public Cars(int Id, String make, String model, int year) {
+		this.Id = Id;
+		this.make = make;
+		this.model = model;
+		this.year = year;
+	}
 
-public void setMake(String make) {
-	this.make = make;
-}
+	public int getId() {
+		return Id;
+	}
 
-public String getModel() {
-	return model;
-}
+	public void setId(int id) {
+		Id = id;
+	}
 
-public void setModel(String model) {
-	this.model = model;
-}
+	public String getMake() {
+		return make;
+	}
 
-public int getYear() {
-	return year;
-}
+	public void setMake(String make) {
+		this.make = make;
+	}
 
-public void setYear(int year) {
-	this.year = year;
-}
- 
- 
-}
+	public String getModel() {
+		return model;
+	}
 
+	public void setModel(String model) {
+		this.model = model;
+	}
+
+	public int getYear() {
+		return year;
+	}
+
+	public void setYear(int year) {
+		this.year = year;
+	}
+
+	public Warehouse getWarehouse() {
+		return warehouse;
+	}
+
+	public void setWarehouse(Warehouse warehouse) {
+		this.warehouse = warehouse;
+	}
+
+}
