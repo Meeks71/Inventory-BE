@@ -3,6 +3,7 @@ package com.skillstorm.controllers;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,34 +22,53 @@ import com.skillstorm.services.CarServiceImplementation;
 @RequestMapping("/cars")
 @CrossOrigin("*")
 public class CarsController {
-      private CarServiceImplementation imp;
-      
-      public CarsController(CarServiceImplementation imp) {
-    	  this.imp = imp;
-    	  
-      }
-      @GetMapping
-      public List<Cars> getAllCars(){
-    	  return imp.carsList();
-      }
-      @GetMapping("/{Id}")
-      
-      public Cars getCarById(@PathVariable int Id) {
-    	  return imp.findById(Id);
-      }
-      @PostMapping()
-      @ResponseStatus(code = HttpStatus.CREATED)
-      public Cars createCar(@RequestBody Cars cars) {
-    	  
-    	  return imp.createCar(cars);
-      }
-      @PutMapping("/{Id}")
-      public void updateCar(@RequestBody Cars cars, @PathVariable int Id) {
-    	   imp.update(cars, Id);
-    	  
-      }
-      @DeleteMapping("/{Id}")
-      public void deleteCar(@PathVariable int Id) {
-    	  imp.deletedCar(Id);
-      }
+	private CarServiceImplementation imp;
+
+	public CarsController(CarServiceImplementation imp) {
+		this.imp = imp;
+
+	}
+
+	@GetMapping
+	public List<Cars> getAllCars() {
+		return imp.carsList();
+	}
+
+	@GetMapping("/{Id}")
+
+	public Cars getCarById(@PathVariable int Id) {
+		return imp.findById(Id);
+	}
+
+	@PostMapping()
+	public ResponseEntity<Cars> createCar(@RequestBody Cars cars) {
+
+		Cars car = imp.createCar(cars);
+
+		if (car != null) {
+
+			return new ResponseEntity<Cars>(car, HttpStatus.CREATED);
+
+		} else {
+			return new ResponseEntity<Cars>(car, HttpStatus.BAD_REQUEST);
+
+		}
+
+		// @ResponseStatus(code = HttpStatus.CREATED)
+		// public Cars createCar(@RequestBody Cars cars) {
+
+		//return imp.createCar(cars);
+
+	}
+
+	@PutMapping("/{Id}")
+	public void updateCar(@RequestBody Cars cars, @PathVariable int Id) {
+		imp.update(cars, Id);
+
+	}
+
+	@DeleteMapping("/{Id}")
+	public void deleteCar(@PathVariable int Id) {
+		imp.deletedCar(Id);
+	}
 }

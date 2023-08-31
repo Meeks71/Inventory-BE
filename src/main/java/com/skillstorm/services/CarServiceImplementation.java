@@ -6,19 +6,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.skillstorm.models.Cars;
+import com.skillstorm.models.Warehouse;
 import com.skillstorm.repositories.CarsRepository;
+import com.skillstorm.repositories.WarehouseRepository;
 
 @Service
 public class CarServiceImplementation {
 	private CarsRepository carsrepository;
+	private WarehouseRepository warehouserepo;
 
 	public CarServiceImplementation() {
 
 	}
 
 	@Autowired
-	public CarServiceImplementation(CarsRepository carsrepository) {
+	public CarServiceImplementation(CarsRepository carsrepository, WarehouseRepository warehouserepo) {
 		this.carsrepository = carsrepository;
+		this.warehouserepo = warehouserepo;
 	}
 
 	public List<Cars> carsList() {
@@ -36,7 +40,11 @@ public class CarServiceImplementation {
 	}
 
 	public Cars createCar(Cars createdCar) {
-		return carsrepository.save(createdCar);
+		Warehouse warehouse = createdCar.getWarehouse();
+		if (warehouse != null && warehouse.getId() != 0 && warehouserepo.existsById(warehouse.getId()))
+			return carsrepository.save(createdCar);
+		else
+			return null;
 	}
 
 	public void deletedCar(int Id) {
